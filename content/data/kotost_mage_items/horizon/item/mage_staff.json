@@ -1,0 +1,25 @@
+{
+  "template": "minecraft:stick",
+  "max_stack_size": 1,
+  "rarity": "rare",
+  "components": {
+    "!minecraft:cooking_fuel": {},
+    "minecraft:lore": [
+      {
+        "translate": "item.kotost_mage_items.mage_staff.lore1",
+        "color": "gray",
+        "italic": false
+      },
+      {
+        "translate": "item.kotost_mage_items.mage_staff.lore2",
+        "color": "gray",
+        "italic": false
+      },
+      {
+        "translate": "item.kotost_mage_items.mage_staff.lore3",
+        "color": "gray",
+        "italic": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "title": "itemGroup.kotost_mage_items.mage",
+  "icon": "kotost_mage_items:mage_staff",
+  "items": [
+    "kotost_mage_items:mage_staff",
+    "kotost_mage_items:mage_hat",
+    "kotost_mage_items:mage_dress"
+  ]
+}

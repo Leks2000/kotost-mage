@@ -1,0 +1,8 @@
+id = "kotost_mage_items"
+name = "Kotost Mage Items"
+version = "0.6.1"
+description = "The mage's hat, dress and staff as items (with recipes), and the spells' sound events (the game's own sounds), for the Kotost Mage native mod."
+authors = ["Kotost Games"]
+api = "0.2"
+side = "both"
+capabilities = ["registries"]

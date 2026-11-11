@@ -1,0 +1,138 @@
+# Kotost Mage settings. The game re-reads this file by itself (twice a second): no restart needed.
+# key = value; anything after # is a comment; delete a line to get its default back.
+# The spells' numbers (mana, damage, radii) are the server's: on your own server, edit the file in the server's folder.
+mana_max = 100
+debug = 0              # 1: write kotost-mage-debug.log (what is cast and why not)
+
+# --- keys ---
+key_fireball = r       # fireball
+key_step = g           # shadow step
+key_meteor = z         # meteor
+key_frost = x          # absolute zero
+key_chain = c          # chain lightning
+key_nova = n           # supernova (in Horizon B is the emote wheel)
+
+# --- mana ---
+
+mana_regen = 4         # mana per second
+
+# --- the mage's things (the server counts them) ---
+# Items: kotost_mage_items:mage_hat (hat, on the head), kotost_mage_items:mage_dress (dress, on the chest),
+# kotost_mage_items:mage_staff (staff, in a hand). The clothes show only while worn, the staff while held.
+need_staff = 1         # spells only with the staff in a hand (0: cast without it too)
+hat_mana = 25          # hat: + to the mana maximum
+hat_haste = 10         # hat: faster cooldowns, %
+dress_mana = 50        # dress: + to the mana maximum
+dress_haste = 5        # dress: faster cooldowns, %
+staff_mana = 0         # staff: + to the mana maximum
+staff_haste = 15       # staff: faster cooldowns, %
+gear_foreign = 0.5     # share of the mage items' bonus on a player of another class
+class = mage           # players' class by default: mage | knight | archer | merchant
+# class.Name = knight  # one player's class (a line for each)
+
+# --- wind-up and mastery (the server counts them) ---
+# A spell gathers first (the mage winds up, the circle grows), then goes off. The mage's things and the
+# spell's mastery shorten both the wind-up and the cooldown.
+fire_windup = 0.45     # fireball: seconds of wind-up
+step_windup = 0.3      # shadow step
+meteor_windup = 1.3    # meteor
+frost_windup = 0.9     # absolute zero
+chain_windup = 0.7     # chain lightning
+nova_windup = 0.5      # supernova (then its charge, nova_charge)
+windup_scale = 1.0     # all wind-ups at once (0: they go off at once, 2: twice as long)
+mastery_max = 10       # levels of each spell
+mastery_casts = 5      # casts to level 2; each next level needs that many more
+mastery_speed = 4      # each level after the first: wind-up and cooldown faster, %
+fire_assist = 6        # the fireball locks on a mob within this many degrees of the crosshair
+fire_homing = 3        # and turns to it, degrees per tick (0: flies straight)
+aim = 1                # aim preview while winding up (the ball's path, the meteor's circle, the step's spot), per player
+
+# --- fireball ---
+fire_cost = 12
+fire_cooldown = 0.6    # seconds
+fire_speed = 1.3       # blocks per tick
+fire_gravity = 0.01    # how much the ball drops
+fire_radius = 2        # blast radius (breaks no blocks)
+fire_life = 3          # seconds of flight before it fades
+fire_ignite = 0        # 1: set fire around the blast
+
+# --- shadow step ---
+step_cost = 20
+step_cooldown = 1.5
+step_min = 5           # closer: no jump
+step_max = 12          # further: no jump
+
+# --- meteor ---
+meteor_cost = 90
+meteor_cooldown = 30
+meteor_range = 160     # how far you can aim
+meteor_fall = 1.5      # seconds from the circle to the impact
+meteor_radius = 36     # crater radius (up to 96)
+meteor_depth = 14      # depth in the middle
+meteor_clear = 56      # how many blocks above ground it sweeps away (houses, trees)
+meteor_rim = 4         # height of the rim around it
+meteor_blocks = 1      # 0: no crater, only the blast and the effects
+meteor_debris = 600    # flying blocks (up to 1000)
+meteor_throw = 1.0     # how far they are thrown
+meteor_fire = 0.06     # share of fire around the crater
+meteor_lava = 0.35     # share of lava at the bottom in the middle
+meteor_damage = 60     # damage to mobs in the middle (less towards the edge)
+meteor_push = 2.5      # shock wave: knockback strength
+meteor_smoke = 14      # seconds of smoke and ash
+meteor_size = 9        # size of the rock in the sky (blocks)
+
+# --- absolute zero ---
+frost_cost = 40
+frost_cooldown = 12
+frost_radius = 12      # ring of ice: water freezes, grass under snow
+frost_seconds = 4      # how long mobs stay in the ice
+frost_damage = 8       # damage when the ice shatters
+
+# --- chain lightning ---
+chain_cost = 30
+chain_cooldown = 4
+chain_range = 24       # to the first target
+chain_jump = 10        # jump to the next one
+chain_count = 5        # how many targets
+chain_damage = 7       # damage to each
+chain_bolt = 1         # a real lightning bolt from the sky into the last one
+
+# --- supernova ---
+nova_cost = 70
+nova_cooldown = 25
+nova_rise = 3          # how many blocks the mage rises
+nova_charge = 2        # seconds of charge
+nova_radius = 10       # blast radius
+nova_damage = 30       # damage in the middle
+nova_blocks = 1        # 0: no crater
+nova_fire = 0.45       # share of fire in the ring
+
+# --- screen (each player's own) ---
+shake = 1.0            # shake (0: none)
+flash = 1.0            # flash (0: none)
+dust = 1.0             # brown sky after a meteor (0: none)
+dust_seconds = 45
+dust_fog = 40          # how far you see in the dust, blocks
+hud = 1                # mana bar
+
+# --- the mage's clothes (drawn by the worn items, see "the mage's things") ---
+skirt_k = 0.9          # skirt spring stiffness
+skirt_c = 0.35         # damping (lower: swings longer)
+skirt_kick = 1.6       # kick of each step
+skirt_trail = 9        # how far it trails back while running, degrees
+skirt_turn = 0.25      # swing on turns
+skirt_jump = 1.0       # the hem flying up on a jump
+skirt_max = 28         # swing limit, degrees
+skirt_len = 12.6       # skirt length from the waist, model pixels (12.6: to the ankles)
+skirt_width = 1.0      # skirt width at the hem
+slit = 1.0             # side slit up to the thigh (0: none, 1.5: wider)
+stockings = 1          # stockings with garters, and boots
+legs_push = 1.0        # the legs push the hem (0: they pass through)
+stance = 1.0           # standing, the leg under the slit steps forward (0: stands straight)
+
+# --- casting (each player's own) ---
+cast_fx = 1            # circle of runes at the feet, ring, sparks (0: none)
+cast_kick = 1.0        # the hem and the hat fly up on a cast
+recoil = 1.0           # camera recoil on your own cast (0: none)
+sparks = 1.0           # how many sparks on a cast (0: none, 2: twice as thick)
+pillar = 1             # pillar of light and ring of runes at the staff on a cast

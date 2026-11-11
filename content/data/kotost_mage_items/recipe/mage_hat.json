@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "L": "minecraft:leather",
+    "G": "minecraft:gold_ingot"
+  },
+  "pattern": [
+    " A ",
+    " L ",
+    "LGL"
+  ],
+  "result": {
+    "id": "kotost_mage_items:mage_hat"
+  }
+}

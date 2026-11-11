@@ -1,0 +1,207 @@
+# Kotost Mage: a mage for Horizon: mana and its HUD bar, six spells (fireball, shadow step, meteor, absolute
+# zero, chain lightning, supernova) that gather and then go off where you look, mastery levels; the mage's hat,
+# dress (a bell skirt on a spring) and staff with a glowing crystal on the player model, each drawn while its
+# item is worn or held (the items are the content mod's, content/: kotost_mage_items:mage_hat, mage_dress,
+# mage_staff; spells need the staff in a hand).
+# Native mod for Horizon nightly-2026-11-08-fdc87ae (docs/native-mods.md, horizon-mixins). Builds together with
+# Kotost Bust (kotost_body 0.4) and needs it: the dress hugs its bust and follows its hourglass body
+# (horizon_client::kotost_body). With Kotost First Person the staff and the dress show in first person too.
+[mod]
+id = "kotost_mage"
+version = "0.6.1"
+priority = 110
+
+[compatibility]
+horizon_revision = "fdc87aecdbd116bf1e08adcd062fcbaea8c2e2ca"
+
+# Everything lives here, inside the game's `game` module (crate::game::kotost_mage): it reaches the game's
+# own helpers (explosions, block edits, falling blocks, teleports, particles, mod messages).
+[[module]]
+id = "runtime"
+file = "crates/horizon-client/src/game.rs"
+name = "kotost_mage"
+source = "mage.rs"
+visibility = "pub"
+
+# The cast pose: in horizon-client-lib's root, so the model's animation reaches it (horizon_client::kotost_mage_pose).
+[[module]]
+id = "pose"
+file = "crates/horizon-client/src/client_lib.rs"
+name = "kotost_mage_pose"
+source = "pose.rs"
+visibility = "pub"
+
+# Vanilla bangs of the mod's own blasts kept quiet: in horizon-client-render, beside the sound engine.
+[[module]]
+id = "mute"
+file = "crates/horizon-client-render/src/lib.rs"
+name = "kotost_mage_mute"
+source = "mute.rs"
+visibility = "pub"
+
+# --- client: keys, mod messages, HUD, camera, light, the world's shapes, fog ---------------------------
+[[injection]]
+id = "key"
+kind = "HEAD"
+hook = "key"
+hook_version = 1
+helper = "hooks/key.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "key", ty = "&str", value = "key" },
+  { name = "pressed", ty = "bool", value = "pressed" },
+]
+
+[[injection]]
+id = "net-from-server"
+kind = "HEAD"
+hook = "net_from_server"
+hook_version = 1
+helper = "hooks/net_server.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "channel", ty = "&str", value = "channel" },
+  { name = "data", ty = "&[u8]", value = "data" },
+]
+
+[[injection]]
+id = "hud"
+kind = "HEAD"
+hook = "hud"
+hook_version = 1
+helper = "hooks/hud.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "batch", ty = "&mut HudBatch", value = "&mut *batch" },
+]
+
+[[injection]]
+id = "camera-shake"
+kind = "HEAD"
+hook = "camera_shake"
+hook_version = 1
+helper = "hooks/shake.rs"
+bindings = [{ name = "shake", ty = "&mut NativeShake", value = "&mut *shake" }]
+
+[[injection]]
+id = "visuals"
+kind = "HEAD"
+hook = "visuals"
+hook_version = 1
+helper = "hooks/visuals.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "self" },
+  { name = "lights", ty = "&mut Vec<NativeColoredLight>", value = "&mut *lights" },
+]
+
+[[injection]]
+id = "world-primitives"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_world_primitives"
+helper = "hooks/primitives.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "self" },
+  { name = "partial", ty = "f32", value = "partial" },
+  { name = "camera", ty = "[f64; 3]", value = "camera" },
+  { name = "primitives", ty = "&mut WorldPrimitives", value = "&mut *primitives" },
+]
+
+[[injection]]
+id = "fog-color"
+kind = "HEAD"
+hook = "compute_fog_color"
+hook_version = 1
+helper = "hooks/fog_color.rs"
+bindings = [
+  { name = "fog_type", ty = "horizon_client::fog::FogType", value = "fog_type" },
+  { name = "rgb", ty = "&mut [f32; 3]", value = "&mut *rgb" },
+]
+
+[[injection]]
+id = "render-fog"
+kind = "HEAD"
+hook = "render_fog"
+hook_version = 1
+helper = "hooks/render_fog.rs"
+bindings = [
+  { name = "fog_type", ty = "horizon_client::fog::FogType", value = "fog_type" },
+  { name = "fog", ty = "&mut horizon_client::fog::FogData", value = "&mut *fog" },
+]
+
+# The hat, the dress and the staff: beside the elytra layer, which every player's model runs (the local
+# player's in third person and kotost_body's first-person body, other players' always).
+[[injection]]
+id = "outfit"
+kind = "HEAD"
+target = "horizon_client::game::perspective::Game<'_>::player_elytra_geometry"
+helper = "hooks/outfit.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "self" },
+  { name = "m", ty = "&Mob", value = "m" },
+  { name = "camera", ty = "glam::DVec3", value = "camera" },
+  { name = "partial", ty = "f32", value = "partial" },
+  { name = "light", ty = "u32", value = "light" },
+  { name = "out", ty = "&mut Vec<horizon_client::mesher::Vertex>", value = "&mut *out" },
+]
+
+[[injection]]
+id = "tick"
+kind = "HEAD"
+hook = "tick"
+hook_version = 1
+helper = "hooks/tick.rs"
+bindings = [{ name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" }]
+
+# --- server: the spells ------------------------------------------------------------------------------
+[[injection]]
+id = "net-from-client"
+kind = "HEAD"
+hook = "net_from_client"
+hook_version = 1
+helper = "hooks/net_client.rs"
+bindings = [
+  { name = "player", ty = "u128", value = "player" },
+  { name = "channel", ty = "&str", value = "channel" },
+  { name = "data", ty = "&[u8]", value = "data" },
+]
+
+[[injection]]
+id = "level-tick"
+kind = "HEAD"
+hook = "level_tick_post"
+hook_version = 1
+helper = "hooks/level_tick.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "dimension", ty = "&str", value = "dimension" },
+]
+
+# --- the cast pose: the mob being posed, then its arms turned near the end of a humanoid's pose ----------
+[[injection]]
+id = "pose-setup"
+kind = "HEAD"
+target = "horizon_client_lib::mobs::anim::setup"
+helper = "hooks/pose_setup.rs"
+bindings = [{ name = "m", ty = "&Mob", value = "m" }]
+
+[[injection]]
+id = "pose-bob"
+kind = "HEAD"
+target = "horizon_client_lib::mobs::anim::bob"
+helper = "hooks/pose_bob.rs"
+bindings = [
+  { name = "p", ty = "&mut Poses", value = "&mut *p" },
+  { name = "n", ty = "&str", value = "n" },
+]
+
+# --- the mod's own sounds instead of vanilla's bang where its blasts go off -------------------------------
+[[injection]]
+id = "mute-sound"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client_render::audio::Audio::play_seeded"
+helper = "hooks/mute_sound.rs"
+bindings = [
+  { name = "event", ty = "&str", value = "event" },
+  { name = "at", ty = "Option<[f64; 3]>", value = "at" },
+]

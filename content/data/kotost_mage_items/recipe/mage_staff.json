@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "G": "minecraft:gold_ingot",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "  A",
+    " G ",
+    "S  "
+  ],
+  "result": {
+    "id": "kotost_mage_items:mage_staff"
+  }
+}

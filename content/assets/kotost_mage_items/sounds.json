@@ -1,0 +1,217 @@
+{
+  "cast": {
+    "sounds": [
+      {
+        "name": "minecraft:mob/evocation_illager/cast1",
+        "volume": 0.6,
+        "pitch": 1.2
+      },
+      {
+        "name": "minecraft:mob/evocation_illager/cast2",
+        "volume": 0.6,
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.cast"
+  },
+  "fire.launch": {
+    "sounds": [
+      {
+        "name": "minecraft:mob/ghast/fireball4",
+        "volume": 0.8,
+        "pitch": 1.1
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.fire.launch"
+  },
+  "fire.hit": {
+    "sounds": [
+      {
+        "name": "minecraft:random/explode1",
+        "volume": 0.5,
+        "pitch": 1.4
+      },
+      {
+        "name": "minecraft:random/explode2",
+        "volume": 0.5,
+        "pitch": 1.4
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.fire.hit"
+  },
+  "fire.fizzle": {
+    "sounds": [
+      {
+        "name": "minecraft:random/fizz",
+        "volume": 0.6,
+        "pitch": 1.0
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.fire.fizzle"
+  },
+  "step": {
+    "sounds": [
+      {
+        "name": "minecraft:mob/endermen/portal",
+        "volume": 0.8,
+        "pitch": 1.0
+      },
+      {
+        "name": "minecraft:mob/endermen/portal2",
+        "volume": 0.8,
+        "pitch": 1.0
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.step"
+  },
+  "meteor.call": {
+    "sounds": [
+      {
+        "name": "minecraft:mob/evocation_illager/prepare_summon",
+        "volume": 1.0,
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.meteor.call"
+  },
+  "meteor.fall": {
+    "sounds": [
+      {
+        "name": "minecraft:mob/ghast/fireball4",
+        "volume": 1.0,
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.meteor.fall"
+  },
+  "meteor.impact": {
+    "sounds": [
+      {
+        "name": "minecraft:random/explode3",
+        "volume": 1.0,
+        "pitch": 0.7
+      },
+      {
+        "name": "minecraft:random/explode4",
+        "volume": 1.0,
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.meteor.impact"
+  },
+  "meteor.rumble": {
+    "sounds": [
+      {
+        "name": "minecraft:ambient/weather/thunder1",
+        "volume": 0.6,
+        "pitch": 0.6
+      },
+      {
+        "name": "minecraft:ambient/weather/thunder2",
+        "volume": 0.6,
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.meteor.rumble"
+  },
+  "frost.cast": {
+    "sounds": [
+      {
+        "name": "minecraft:block/powder_snow/break1",
+        "volume": 1.0,
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:block/powder_snow/break2",
+        "volume": 1.0,
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.frost.cast"
+  },
+  "frost.shatter": {
+    "sounds": [
+      {
+        "name": "minecraft:random/glass1",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      {
+        "name": "minecraft:random/glass2",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      {
+        "name": "minecraft:random/glass3",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.frost.shatter"
+  },
+  "chain.zap": {
+    "sounds": [
+      {
+        "name": "minecraft:mob/breeze/shoot",
+        "volume": 0.8,
+        "pitch": 1.5
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.chain.zap"
+  },
+  "chain.thunder": {
+    "sounds": [
+      {
+        "name": "minecraft:item/trident/thunder1",
+        "volume": 0.9,
+        "pitch": 1.0
+      },
+      {
+        "name": "minecraft:item/trident/thunder2",
+        "volume": 0.9,
+        "pitch": 1.0
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.chain.thunder"
+  },
+  "nova.charge": {
+    "sounds": [
+      {
+        "name": "minecraft:block/beacon/power1",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      {
+        "name": "minecraft:block/beacon/power2",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.nova.charge"
+  },
+  "nova.boom": {
+    "sounds": [
+      {
+        "name": "minecraft:mob/warden/sonic_boom1",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      {
+        "name": "minecraft:mob/warden/sonic_boom2",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.nova.boom"
+  },
+  "fail": {
+    "sounds": [
+      {
+        "name": "minecraft:block/respawn_anchor/deplete1",
+        "volume": 0.5,
+        "pitch": 1.4
+      }
+    ],
+    "subtitle": "subtitles.kotost_mage_items.fail"
+  }
+}

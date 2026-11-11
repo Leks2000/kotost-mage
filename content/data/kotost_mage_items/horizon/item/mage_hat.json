@@ -1,0 +1,26 @@
+{
+  "template": "minecraft:leather_helmet",
+  "rarity": "rare",
+  "components": {
+    "minecraft:equippable": {
+      "slot": "head",
+      "equip_sound": "minecraft:item.armor.equip_leather"
+    },
+    "!minecraft:max_damage": {},
+    "!minecraft:damage": {},
+    "!minecraft:enchantable": {},
+    "!minecraft:repairable": {},
+    "minecraft:lore": [
+      {
+        "translate": "item.kotost_mage_items.mage_hat.lore1",
+        "color": "gray",
+        "italic": false
+      },
+      {
+        "translate": "item.kotost_mage_items.mage_hat.lore2",
+        "color": "gray",
+        "italic": false
+      }
+    ]
+  }
+}

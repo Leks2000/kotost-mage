@@ -28,6 +28,8 @@ dress and the staff when you look down.
 
 Hold the **Mage's Staff** in a hand and press the spell's key. Each spell first gathers (the mage winds up, a circle
 of runes grows, sparks fly into the crystal), then goes off where you look; an aim preview shows where.
+The spell buttons and the mana bar show only while a magic item (now: the staff) is in a hand; put it away and they
+hide, but the mana and the cooldowns keep running.
 
 | Key | Spell | What it does |
 | --- | --- | --- |
@@ -75,7 +77,7 @@ mod writes, with every key, its default and what it does. The main ones:
 | --- | --- | --- |
 | `key_fireball` ... `key_nova` | `r g z x c n` | The spells' keys. |
 | `mana_max`, `mana_regen` | `100`, `4` | Mana and how fast it refills (per second). |
-| `need_staff` | `1` | `0`: cast without the staff. |
+| `need_staff` | `1` | `0`: cast without a magic item in a hand. |
 | `<spell>_cost`, `<spell>_cooldown`, `<spell>_windup` | | Each spell's mana, cooldown and wind-up (seconds). |
 | `windup_scale` | `1.0` | All wind-ups at once (`0`: instant). |
 | `mastery_max`, `mastery_casts`, `mastery_speed` | `10`, `5`, `4` | Levels, casts per level, % faster per level. |

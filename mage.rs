@@ -33,6 +33,9 @@ fn lock<T>(m: &Mutex<T>) -> std::sync::MutexGuard<'_, T> {
 pub const ITEM_HAT: &str = "kotost_mage_items:mage_hat";
 pub const ITEM_DRESS: &str = "kotost_mage_items:mage_dress";
 pub const ITEM_STAFF: &str = "kotost_mage_items:mage_staff";
+/// The magic items: one of them in a hand shows the spells and the mana bar and lets spells be cast
+/// (`need_staff`). A new magic item: add its id here.
+pub const MAGIC_ITEMS: &[&str] = &[ITEM_STAFF];
 /// The class the mage's things belong to (`class` in the server's config).
 const CLASS_MAGE: &str = "mage";
 
@@ -258,7 +261,7 @@ mana_regen = 4         # mana per second
 # --- the mage's things (the server counts them) ---
 # Items: kotost_mage_items:mage_hat (hat, on the head), kotost_mage_items:mage_dress (dress, on the chest),
 # kotost_mage_items:mage_staff (staff, in a hand). The clothes show only while worn, the staff while held.
-need_staff = 1         # spells only with the staff in a hand (0: cast without it too)
+need_staff = 1         # spells only with a magic item (the staff) in a hand (0: cast without it too)
 hat_mana = 25          # hat: + to the mana maximum
 hat_haste = 10         # hat: faster cooldowns, %
 dress_mana = 50        # dress: + to the mana maximum
@@ -745,6 +748,8 @@ struct Gear {
     hat: bool,
     dress: bool,
     staff: bool,
+    /// A magic item (`MAGIC_ITEMS`) in a hand.
+    magic: bool,
     mage: bool,
 }
 
@@ -752,6 +757,7 @@ const GEAR_HAT: u8 = 1;
 const GEAR_DRESS: u8 = 2;
 const GEAR_STAFF: u8 = 4;
 const GEAR_MAGE: u8 = 8;
+const GEAR_MAGIC: u8 = 16;
 
 impl Gear {
     fn bits(self) -> u8 {
@@ -759,6 +765,7 @@ impl Gear {
             | u8::from(self.dress) * GEAR_DRESS
             | u8::from(self.staff) * GEAR_STAFF
             | u8::from(self.mage) * GEAR_MAGE
+            | u8::from(self.magic) * GEAR_MAGIC
     }
 
     /// What the things give their wearer: mana added to the maximum, and the factor of every cooldown
@@ -782,12 +789,21 @@ fn holds_staff(game: &Game<'_>, uuid: u128) -> bool {
     wears(game, uuid, Slot::MainHand, ITEM_STAFF) || wears(game, uuid, Slot::OffHand, ITEM_STAFF)
 }
 
+/// A magic item (`MAGIC_ITEMS`) in either hand.
+fn holds_magic(game: &Game<'_>, uuid: u128) -> bool {
+    use horizon_client::mod_api::EquipmentSlot as Slot;
+    [Slot::MainHand, Slot::OffHand].into_iter().any(|slot| {
+        game.native_player_equipment(uuid, slot).is_some_and(|s| MAGIC_ITEMS.contains(&&*s.item))
+    })
+}
+
 fn gear_of(game: &Game<'_>, p: &NativeServerPlayer) -> Gear {
     use horizon_client::mod_api::EquipmentSlot as Slot;
     Gear {
         hat: wears(game, p.uuid, Slot::Head, ITEM_HAT),
         dress: wears(game, p.uuid, Slot::Chest, ITEM_DRESS),
         staff: holds_staff(game, p.uuid),
+        magic: holds_magic(game, p.uuid),
         mage: settings(|s| s.classes.of(&p.name) == CLASS_MAGE),
     }
 }
@@ -1288,7 +1304,7 @@ fn cast(
     let gear = gear_of(game, p);
     let c = s.casters.entry(p.uuid).or_insert_with(|| Caster::new(t));
     c.gear = gear;
-    if t.need_staff && !gear.staff {
+    if t.need_staff && !gear.magic {
         debug(&format!("cast {spell} by {}: no staff in hand", p.name));
         fail(game, p.uuid, spell, 4);
         return;
@@ -1368,7 +1384,7 @@ fn release(
         return;
     }
     // The staff put away while it gathered: nothing.
-    if t.need_staff && !gear.staff {
+    if t.need_staff && !gear.magic {
         fizzle(game, 4);
         return;
     }
@@ -4259,12 +4275,16 @@ pub fn hud(game: &Game<'_>, batch: &mut horizon_client::hud::HudBatch) {
                 let s = now.duration_since(k.born).as_secs_f32();
                 (k.windup > 0.0 && s < k.windup).then(|| (k.spell, s / k.windup, k.level))
             });
-            (c.mana, c.max, cds, c.costs, c.fail, c.totals, c.need_staff && c.gear & GEAR_STAFF == 0, c.mastery, gathering)
+            (c.mana, c.max, cds, c.costs, c.fail, c.totals, c.need_staff && c.gear & GEAR_MAGIC == 0, c.mastery, gathering, c.gear & GEAR_MAGIC != 0)
         })
     });
-    let Some((mana, max, cds, costs, fail, totals, no_staff, mastery, gathering)) = state else {
+    let Some((mana, max, cds, costs, fail, totals, no_staff, mastery, gathering, magic)) = state else {
         return;
     };
+    // No magic item in a hand: no spells and no mana bar (the mana itself stays as it is).
+    if !magic {
+        return;
+    }
     const NAMES: [&str; SPELLS] = ["Fireball", "Shadow step", "Meteor", "Absolute zero", "Chain lightning", "Supernova"];
     // The spell gathering: its name and level over a bar filling under the crosshair.
     if let Some((spell, q, level)) = gathering {

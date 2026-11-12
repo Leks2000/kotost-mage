@@ -2377,21 +2377,24 @@ fn chain(game: &mut Game<'_>, t: &Tune, players: &[NativeServerPlayer], p: &Nati
     let range = f64::from(t.chain_range);
     let centers: Vec<[f64; 3]> = mobs.iter().map(|m| add(m.pos, [0.0, 0.9, 0.0])).collect();
     // The first: the mob nearest the aim, ahead, in a narrow cone.
+    // The whole body counts, not one point: feet to head (a tall or low mob, a jump, a step sideways while the
+    // spell gathered must not make it miss), in a cone that widens with the distance.
     let mut best: Option<(usize, f64)> = None;
-    for (i, c) in centers.iter().enumerate() {
-        let to = sub(*c, eye);
-        let d = len(to);
-        let along = to[0] * dir[0] + to[1] * dir[1] + to[2] * dir[2];
-        if d > range || along <= 0.5 {
-            continue;
-        }
-        let off = len(sub(to, mul(dir, along)));
-        if off > 1.5 + along * 0.12 {
-            continue;
-        }
-        let score = off + along * 0.03;
-        if best.is_none_or(|(_, b)| score < b) {
-            best = Some((i, score));
+    for (i, m) in mobs.iter().enumerate() {
+        for h in [0.2, 0.7, 1.2, 1.7] {
+            let to = sub(add(m.pos, [0.0, h, 0.0]), eye);
+            let along = to[0] * dir[0] + to[1] * dir[1] + to[2] * dir[2];
+            if len(to) > range + 2.0 || along <= 0.5 {
+                continue;
+            }
+            let off = len(sub(to, mul(dir, along)));
+            if off > 1.8 + along * 0.18 {
+                continue;
+            }
+            let score = off + along * 0.03;
+            if best.is_none_or(|(_, b)| score < b) {
+                best = Some((i, score));
+            }
         }
     }
     let mut hit: Vec<usize> = Vec::new();
